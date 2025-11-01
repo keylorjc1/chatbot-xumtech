@@ -1,6 +1,7 @@
 import {Router} from 'express'
 import {body} from 'express-validator'
 import { ProjectController } from '../controllers/ProjectController'
+import { handleInputErros } from '../middleware/validation'
 
 const router = Router()
 
@@ -11,6 +12,7 @@ router.post('/',
     .notEmpty().withMessage('The name of the Client is required'),
         body('description')
     .notEmpty().withMessage('The Description is required'),
+    handleInputErros,
     ProjectController.createProject
 )
 router.get('/',ProjectController.getAllProjects)
