@@ -18,3 +18,29 @@ router.post('/',
 router.get('/',ProjectController.getAllProjects)
 
 export default router
+
+// import { Router } from 'express';
+// import { body } from 'express-validator';
+// import { TicketController } from '../controllers/TicketController';
+// import { handleInputErrors } from '../middleware/validation';
+
+// const router = Router();
+
+// // Crear un ticket
+// router.post(
+//   '/',
+//   body('title').notEmpty().withMessage('The title of the Ticket is required'),
+//   body('clientName').notEmpty().withMessage('The name of the Client is required'),
+//   body('description').notEmpty().withMessage('The description is required'),
+//   body('status').optional().isIn(['Pending', 'In Progress', 'Solved', 'Closed'])
+//     .withMessage('Status must be Pending, In Progress, Solved, or Closed'),
+//   body('priority').optional().isIn(['Low', 'Medium', 'High'])
+//     .withMessage('Priority must be Low, Medium, or High'),
+//   handleInputErrors,
+//   TicketController.createTicket
+// );
+
+// // Obtener todos los tickets
+// router.get('/', TicketController.getAllTickets);
+
+// export default router;
