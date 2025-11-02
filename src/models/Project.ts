@@ -1,14 +1,15 @@
 // Importamos mongoose y sus tipos
 // `Schema` se usa para definir la estructura del documento
 // `Document` es la clase base que representa un documento en MongoDB
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, PopulatedDoc, Types} from "mongoose";
+import { ITask } from "./Task";
 
-// 🧩 Definimos un tipo TypeScript para darle tipado fuerte al modelo
-// Esto ayuda a que el editor reconozca las propiedades (autocompletado, validaciones, etc.)
-export type ProjectType = Document & {
+
+export interface IProject extends Document {
   projectName: string;   // Nombre del proyecto
   clientName: string;    // Nombre del cliente
   description: string;   // Descripción del proyecto
+  tasks: PopulatedDoc<ITask & Document>[]
 };
 
 // 🧱 Definimos el esquema de Mongoose (la estructura del documento en MongoDB)
@@ -29,13 +30,19 @@ const ProjectSchema: Schema = new Schema({
     required: true,
     trim: true,
   },
-});
+  tasks: [
+    {
+      type: Types.ObjectId,
+      ref: 'Task'
+    }
+  ]
+}, {timestamps: true});
 
 // 🧠 Creamos el modelo de Mongoose
 // `mongoose.model()` vincula el esquema con una colección en MongoDB
 // El primer parámetro 'Project' es el nombre del modelo
 // MongoDB lo pluraliza automáticamente → colección "projects"
-const Project = mongoose.model<ProjectType>("Project", ProjectSchema);
+const Project = mongoose.model<IProject>("Project", ProjectSchema);
 
 // 🚀 Exportamos el modelo para poder usarlo en controladores, rutas, etc.
 // Ejemplo: Project.find(), Project.create(), Project.updateOne(), etc.
