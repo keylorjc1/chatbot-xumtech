@@ -39,6 +39,34 @@ static getProjectById = async (req: Request, res: Response): Promise<void> => {
             res.status(500).json({ error: 'Server Error' }); 
         }
     }   
+    static updateProject = async (req: Request, res: Response) => {
+        const {id} = req.params
+        try {
+            const project = await Project.findByIdAndUpdate(id, req.body)
+            if (!project){
+                const error = new Error('Project not found')
+                return res.status(404).json({error: error.message})
+            }
+            await project.save()
+            res.send('Project updated')
+        } catch (error) {
+console.log(error);
+        }
+    }   
+        static deleteProject = async (req: Request, res: Response) => {
+        const {id} = req.params
+        try {
+            const project = await Project.findByIdAndDelete(id)
+                        if (!project){
+                const error = new Error('Project not found')
+                return res.status(404).json({error: error.message})
+            }
+            await project.deleteOne()
+            res.send('Project deleted')
+        } catch (error) {
+console.log(error);
+        }
+    }   
 }
 
 // import type { Request, Response } from 'express';
