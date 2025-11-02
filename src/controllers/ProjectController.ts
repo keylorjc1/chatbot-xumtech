@@ -26,7 +26,7 @@ export class ProjectController {
 static getProjectById = async (req: Request, res: Response): Promise<void> => {
         const {id} = req.params
         try {
-            const project = await  Project.findById(id)
+            const project = await  (await Project.findById(id)).depopulate('tasks')
  
             if(!project){
                 const error= new Error('Project not found')
